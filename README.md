@@ -1,6 +1,6 @@
-# Road Sign Classification on PYNQ-Z2 with FINN
+# SAFE — Speed Sign Detection on PYNQ-Z2 with FINN
 
-**Real-time road sign detection using quantized neural networks on FPGA**
+**Real-time speed limit sign detection using a camera, FPGA acceleration, and quantized neural networks**
 
 [![Platform](https://img.shields.io/badge/Platform-PYNQ--Z2-orange.svg)](https://www.pynq.io/)
 [![FINN](https://img.shields.io/badge/FINN-W4A4-blue.svg)](https://github.com/Xilinx/finn)
@@ -8,14 +8,47 @@
 
 ---
 
-## 📌 Overview
+## 📌 About the Project
 
-This project implements real-time road sign classification on the PYNQ-Z2 FPGA board using FINN (Fast, Scalable Quantized Neural Network Inference). The neural network uses W4A4 quantization (4-bit weights, 4-bit activations) for efficient hardware acceleration.
+**SAFE (Speed Analysis and Flow Estimation)** is a real-time speed sign detection system built on the Xilinx PYNQ-Z2 FPGA board. The system uses a USB webcam to capture live video of the road, processes each frame through a quantized convolutional neural network deployed on the FPGA fabric, and identifies speed limit signs (30 km/h, 50 km/h, 60 km/h, 80 km/h, etc.) in real-time.
 
-**Complete Pipeline:**
+### Why FPGA?
+
+Traditional speed sign detection relies on either cloud APIs (high latency, requires connectivity) or power-hungry GPUs (not practical for embedded/vehicular deployment). This project demonstrates that **FPGAs offer the best of both worlds** — low latency, low power, and fully on-device inference — making them ideal for intelligent transportation systems, dashcams, and advanced driver assistance systems (ADAS).
+
+### How It Works
+
+1. **Camera** (USB webcam) connected to PYNQ-Z2 captures video frames
+2. **FPGA accelerator** (programmed via FINN-generated bitstream) runs inference on each frame
+3. **W4A4 quantized CNN** classifies detected sign regions into speed limit categories
+4. **Display** shows the live feed with detected speed signs overlaid in real-time
+
+### Key Features
+
+- 🎥 **Real-time camera input** via USB webcam on PYNQ-Z2
+- ⚡ **FPGA-accelerated inference** — no CPU or GPU bottleneck
+- 🔢 **W4A4 quantization** (4-bit weights, 4-bit activations) for efficient hardware mapping
+- 🚗 **Speed sign classification** for common traffic speed limits
+- 🔋 **Low power** (~3W total system) — suitable for embedded/automotive use
+- 📦 **End-to-end pipeline** — from dataset preparation to FPGA deployment
+
+### Target Applications
+
+- Advanced Driver Assistance Systems (ADAS)
+- Smart dashcams with traffic awareness
+- Autonomous vehicle perception modules
+- Intelligent transportation infrastructure
+- Edge AI research and education
+
+---
+
+## 🔄 Complete Pipeline
+
 ```
 Dataset Prep → Training → ONNX Export → FINN Compilation → FPGA Bitstream → Real-time Inference
 ```
+
+The project covers the full workflow: from preparing a speed sign dataset, training a PyTorch model, quantizing and compiling it to FPGA hardware using FINN, and finally deploying it on PYNQ-Z2 for live camera-based inference.
 
 ---
 
@@ -69,16 +102,21 @@ python src/extract_class_labels.py
 python src/prepare_dataset.py
 ```
 
-**Output:** Organized dataset ready for training.
+**Output:** Organized speed sign dataset ready for training.
 
 **Expected dataset structure:**
 ```
 dataset/
-├── stop_sign/
-├── speed_limit/
-├── yield/
+├── speed_30/
+├── speed_50/
+├── speed_60/
+├── speed_80/
 └── ...
 ```
+
+**Recommended datasets:**
+- [GTSRB (German Traffic Sign Recognition Benchmark)](http://benchmark.ini.rub.de/)
+- [LISA Traffic Sign Dataset](http://cvrr.ucsd.edu/LISA/lisa-traffic-sign-dataset.html)
 
 ---
 
@@ -175,7 +213,7 @@ python src/video_inference_new.py
 - FPGA bitstream loads onto programmable logic
 - Webcam initializes and streams frames
 - Each frame is classified in real-time on FPGA
-- Display shows live video with predicted road sign labels
+- Display shows live video with predicted speed sign labels
 - Press `q` to quit
 
 ---
@@ -186,7 +224,7 @@ python src/video_inference_new.py
 - **Input:** 32×32 RGB images
 - **Network:** Custom CNN optimized for FINN
 - **Quantization:** W4A4 (4-bit weights, 4-bit activations)
-- **Output:** Multi-class road sign classification
+- **Output:** Multi-class speed sign classification
 
 ### FINN Compilation Flow
 1. Streamlining and ONNX optimization
