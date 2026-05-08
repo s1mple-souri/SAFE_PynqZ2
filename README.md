@@ -284,6 +284,21 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
+## 👥 Team
+
+| Name | GitHub |
+|------|--------|
+| Shashank C Panthangi | [@Shashank-shekar08](https://github.com/Shashank-shekar08) |
+| Sourabh K H | [@s1mple-souri](https://github.com/s1mple-souri) |
+| Spandan S Salimath | — |
+| Suhas B S | — |
+
+**Guide:** Dr. Jagannatha KB, Assistant Professor
+Department of Electronics and Communication Engineering
+BMS Institute of Technology and Management — 2024–2025
+
+---
+
 ## 🙏 Acknowledgments
 
 - Xilinx FINN team — for the FINN framework
